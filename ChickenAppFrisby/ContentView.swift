@@ -14,12 +14,6 @@ struct Tab: Hashable, Codable {
 
 struct ContentView: View {
     
-    var navigationsTabs: [Tab] = [
-        Tab(icon: "star", label: "Favoritos"),
-        Tab(icon: "cart", label: "Comprar "),
-        Tab(icon: "mappin.circle", label: "Restaurantes"),
-    ]
-    
     @State var selectedTab = "star"
     
     init() {
@@ -27,60 +21,43 @@ struct ContentView: View {
     }
     
     var body: some View {
-        
-        TabView(selection: $selectedTab) {
-            Color(.cyan)
-                .ignoresSafeArea(.all, edges: .all)
-                .tag("star")
-            
-            Color(.blue)
-                .ignoresSafeArea(.all, edges: .all)
-                .tag("cart")
-            
-            Color(.orange)
-                .ignoresSafeArea(.all, edges: .all)
-                .tag("mappin.circle")
-        }
-        .ignoresSafeArea()
-        .safeAreaInset(edge: .bottom) {
-            HStack(spacing: 0){
-                ForEach(navigationsTabs, id: \.icon) { tab in
-                    Spacer()
-                    Button(action: {
-                        selectedTab = tab.icon
-                    }) {
-                        VStack {
-                            Image(systemName: tab.icon)
-                                .resizable()
-                                .renderingMode(.template)
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 22.0, height: 22.0)
-                                .fontWeight(.bold)
-                            Text(tab.label)
-                                .font(.footnote)
-                                .fontWeight(.bold)
-                        }
-                        .padding()
-                        .foregroundStyle(
-                            tab.icon == selectedTab ? .white : .gray
-                        )
-                        .background {
-                            if tab.icon == selectedTab {
-                                Circle()
-                                    .fill(.orange.opacity(0.8))
-                                    .frame(width: 150, height: 150)
-                                
-                                
-                            }
-                        }
-                    }
+        NavigationStack {
+            TabView(selection: $selectedTab) {
+                Color(.white)
+                    .ignoresSafeArea(.all, edges: .all)
+                    .tag("star")
+                
+                Color(.white)
+                    .ignoresSafeArea(.all, edges: .all)
+                    .tag("cart")
+                
+                Color(.white)
+                    .ignoresSafeArea(.all, edges: .all)
+                    .tag("mappin.circle")
+            }
+            .ignoresSafeArea()
+            .safeAreaInset(edge: .bottom) {
+                NavigationBar(selectedTab: $selectedTab)
+            }
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Image(systemName: "list.star")
+                        .foregroundStyle(.red)
+                }
+                ToolbarItem(placement: .principal) {
+                    Image("frisby")
+                        .resizable()
+                        .scaledToFit()
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Image(systemName: "person.crop.circle")
+                        .foregroundStyle(.red)
                 }
             }
-            .frame(maxWidth: .infinity)
-            .background(.white)
-            .cornerRadius(17)
-            .padding()
-            .shadow(color: .gray.opacity(0.4), radius: 5, x: 0, y: 3)
+            
+            .navigationTitle("Frisby")
+            .navigationBarTitleDisplayMode(.inline)
+            
         }
     }
 }
