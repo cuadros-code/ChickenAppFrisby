@@ -10,19 +10,19 @@ import SwiftUI
 struct NavigationBar: View {
     
     var navigationsTabs: [Tab] = [
-        Tab(icon: "star", label: "Favoritos"),
-        Tab(icon: "cart", label: "Comprar "),
-        Tab(icon: "mappin.circle", label: "Restaurantes"),
+        Tab(icon: "star", label: "Favoritos", screen: .favorites),
+        Tab(icon: "cart", label: "Comprar ", screen: .cart),
+        Tab(icon: "mappin.circle", label: "Restaurantes", screen: .map),
     ]
     
-    @Binding var selectedTab: String
+    @Binding var selectedTab: Screens
     
     var body: some View {
         HStack(spacing: 0){
             ForEach(navigationsTabs, id: \.icon) { tab in
                 Spacer()
                 Button(action: {
-                    selectedTab = tab.icon
+                    selectedTab = tab.screen
                 }) {
                     VStack {
                         Image(systemName: tab.icon)
@@ -37,13 +37,13 @@ struct NavigationBar: View {
                     }
                     .padding()
                     .foregroundStyle(
-                        tab.icon == selectedTab ? .white : .gray
+                        tab.screen == selectedTab ? .white : .gray
                     )
                     .background {
-                        if tab.icon == selectedTab {
+                        if tab.screen == selectedTab {
                             Circle()
                                 .fill(.orange.opacity(0.8))
-                                .frame(width: 150, height: 150)
+                                .frame(width: 100, height: 100)
                             
                             
                         }
@@ -60,5 +60,5 @@ struct NavigationBar: View {
 }
 
 #Preview {
-    NavigationBar(selectedTab: .constant("star"))
+    NavigationBar(selectedTab: .constant(.cart))
 }
