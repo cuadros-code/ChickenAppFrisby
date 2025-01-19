@@ -21,7 +21,7 @@ struct Tab: Hashable, Codable {
 
 struct Drawer: View {
     var body: some View {
-        Color.red
+        Color.white
     }
 }
 
@@ -64,7 +64,7 @@ struct ContentView: View {
                             }
                         } label: {
                             Image(systemName: "list.star")
-                                .foregroundStyle( isOpenDrawer ? .white : .red)
+                                .foregroundStyle( isOpenDrawer ? .red : .red)
                                 .fontWeight(.bold)
                         }
                     }
@@ -72,6 +72,7 @@ struct ContentView: View {
                         Image("frisby")
                             .resizable()
                             .scaledToFit()
+                            .opacity(isOpenDrawer ? 0 : 1)
                     }
                     ToolbarItem(placement: .topBarTrailing) {
                         Button {
@@ -86,11 +87,18 @@ struct ContentView: View {
                 
                 .overlay {
                     Drawer()
-                        .cornerRadius(15)
-                        .frame(width: width * 0.8, height: height)
-                        .offset(x: isOpenDrawer ? 0 - (width * 0.2) : -width)
+                        .cornerRadius(35)
+                        .frame(width: width * 0.7, height: height)
+                        .offset(x: isOpenDrawer ? 0 - (width * 0.3) : -width)
                         .animation(.easeInOut, value: isOpenDrawer)
                         .ignoresSafeArea()
+                        .shadow(radius: 10)
+                        .gesture(
+                            DragGesture()
+                                .onChanged { gesture in
+                                    isOpenDrawer = false
+                                }
+                        )
                 }
             }
         }
